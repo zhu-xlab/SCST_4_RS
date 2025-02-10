@@ -1,6 +1,6 @@
 <h1 align="center">
   <a href="https://github.com/dec0dOS/amazing-github-template">
-    <img src="https://github.com/salesforce/LAVIS/blob/main/docs/_static/logo_final.png" alt="Logo" width="125" height="125">
+    <img src="https://github.com/salesforce/LAVIS/blob/main/docs/_static/logo_final.png" alt="Logo" width="250" height="125">
   </a>
 </h1>
 
