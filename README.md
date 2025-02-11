@@ -20,15 +20,12 @@ LAVIS's InstructBLIP model finetuned to remote sensing image-text data via Reinf
 
 - [About](#about)
   - [Built With](#built-with)
+  - [Figure](#figure-model)
+  - [Qualitative results](#quali)
+  - [Quantitative results](#quant)
 - [Getting Started](#getting-started)
   - [Prerequisites](#prerequisites)
   - [Usage](#usage)
-    - [Cookiecutter template](#cookiecutter-template)
-    - [Manual setup](#manual-setup)
-    - [Variables reference](#variables-reference)
-- [Roadmap](#roadmap)
-- [Contributing](#contributing)
-- [Support](#support)
 - [License](#license)
 - [Acknowledgements](#acknowledgements)
 
