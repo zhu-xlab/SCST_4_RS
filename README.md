@@ -58,7 +58,7 @@ This repository relies almost entirely on LAVIS; a few modifications allows it t
 - [FACTUAL scene graph extractor](https://github.com/zhuang-li/FactualSceneGraph)
 One of the most impactful reward function is obtained by measuring the closeness of generated captions and ground-truth (human-annotated) captions. FACTUAL extracts "scene graphs", like the SPICE metric, to compute such a reward by comparing the graphs. It also highlights the missing objects and the hallucinations made by the model.
 
-** Figure **
+**Figure**
 
 <img src="https://i.imgur.com/AasnyVG.png" alt="Figure BLIP_SCST" width="1000" height="300">
 
