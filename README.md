@@ -1,11 +1,11 @@
 <h1 align="center">
   <a href="https://github.com/dec0dOS/amazing-github-template">
-    <img src="https://github.com/user-attachments/assets/e8e84f28-a734-47a1-8239-e90a0b74a408" alt="Logo" width="800" height="200">
+    <img src="https://i.imgur.com/TBRZwDu.png" alt="Logo" width="800" height="200">
   </a>
 </h1>
 
 <div align="center">
-  LAVIS's InstructBLIP model finetuned to remote sensing image-text data via Reinforcement Learning.
+LAVIS's InstructBLIP model finetuned to remote sensing image-text data via Reinforcement Learning. The aim is to teach Visual Reasoning to a VLM on Remote Sensing imagery, which is only scarcely present in its pretraining dataset.
 </div>
 
 <div align="center">
@@ -57,7 +57,9 @@ Note that **SCST** can be made compatible with PPO/GRPO, with the issue that the
 ### Built With
 
 - [SalesForce's LAVIS repository](https://github.com/salesforce/LAVIS)
+This repository relies almost entirely on LAVIS; a few modifications allows it to be finetuned using RL.
 - [FACTUAL scene graph extractor](https://github.com/zhuang-li/FactualSceneGraph)
+One of the most impactful reward function is obtained by measuring the closeness of generated captions and ground-truth (human-annotated) captions. FACTUAL extracts "scene graphs", like the SPICE metric, to compute such a reward by comparing the graphs. It also highlights the missing objects and the hallucinations made by the model.
 
 ## Getting Started
 
@@ -69,35 +71,30 @@ Note that **SCST** can be made compatible with PPO/GRPO, with the issue that the
 ```sh
 pip install FactualSceneGraph
 ```
-OR
-[Thehttps://github.com/zhuang-li/FactualSceneGraph
+OR choose a pretrained model from huggingface: <a> https://github.com/zhuang-li/FactualSceneGraph </a>
 
 
 ### Usage
 
-#### Cookiecutter template
+#### RSRL-LAVIS
 
-After installing Cookiecutter, all you need to do is to run the following command:
+After installing this repository, you need to create an environment, activate it, and install the libraries from requirements.txt. **PYTHON 3.9+ REQUIRED**
 
+**conda**
 ```sh
-cookiecutter gh:dec0dOS/amazing-github-template
+conda create --name lavis_rl python=3.9
+conda activate lavis_rl
 ```
 
-You will get an interactive prompt where you'll specify relevant options for your project (or the default value will be used).
+**pip**
+```sh
+pip install -r requirements.txt
+```
 
-![Preview](docs/images/preview.svg)
+#### Best model
 
-#### Manual setup
-
-Please follow these steps for manual setup:
-
-1. [Download the precompiled template](https://github.com/dec0dOS/amazing-github-template/releases/download/latest/template.zip)
-2. Replace all the [variables](#variables-reference) to your desired values
-3. Initialize the repo in the precompiled template folder
-
-    `or`
-
-    Move the necessary files from precompiled template folder to your existing project directory. Don't forget the `.github` directory that may be hidden by default in your operating system
+weights for the best InstructBLIP model I have managed to obtain.
+<a>https://huggingface.co/tdujardin/InstructBLIP_RS_RL/tree/main</a>
 
 ## License
 
@@ -107,4 +104,4 @@ See [LICENSE](LICENSE) for more information.
 
 ## Acknowledgements
 
-Thanks for these awesome resources that were used during the development of the **Amazing GitHub template**:
+Thanks to SalesForce and their **BLIP** repository that made it simple to implement RL algorithms, and to train on my own data.
