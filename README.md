@@ -72,22 +72,22 @@ OR choose a pretrained model from huggingface: <a> https://github.com/zhuang-li/
 
 ### Usage
 
-#### RSRL-LAVIS
+#### RS-LAVIS with RL
 
 After installing this repository, you need to create an environment, activate it, and install the libraries from requirements.txt. **PYTHON 3.9+ REQUIRED**
 
-**conda**
+#### conda
 ```sh
 conda create --name lavis_rl python=3.9
 conda activate lavis_rl
 ```
 
-**pip**
+#### pip
 ```sh
 pip install -r requirements.txt
 ```
 
-#### Best model
+## Best model
 
 weights for the best InstructBLIP model I have managed to obtain.
 <a>https://huggingface.co/tdujardin/InstructBLIP_RS_RL/tree/main</a>
