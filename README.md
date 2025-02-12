@@ -96,8 +96,6 @@ weights for the best InstructBLIP model I have managed to obtain.
 
 This project is licensed under the **MIT license**.
 
-See [LICENSE](LICENSE) for more information.
-
 ## Acknowledgements
 
 Thanks to SalesForce and their **BLIP** repository that made it simple to implement RL algorithms, and to train on my own data.
