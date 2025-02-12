@@ -70,7 +70,7 @@ pip install FactualSceneGraph
 OR choose a pretrained model from huggingface: <a> https://github.com/zhuang-li/FactualSceneGraph </a>
 
 
-### Usage
+## Usage
 
 #### RS-LAVIS with RL
 
