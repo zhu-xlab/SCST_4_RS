@@ -57,6 +57,10 @@ Note that **SCST** can be made compatible with PPO/GRPO, with the issue that the
 
 <img src="https://i.imgur.com/AasnyVG.png" alt="Figure BLIP_SCST" width="1000" height="300">
 
+## 📊 Qualitative results
+
+## 📈 Quantitative results
+
 ## Getting Started
 
 ### Prerequisites
