@@ -62,8 +62,8 @@ Note that **SCST** can be made compatible with PPO/GRPO, with the issue that the
 ### Prerequisites
 
 - Clone the present repository (installing LAVIS from scratch will require multiple precise modifications in the code that have already been done in this very repository).
-- Reward functions utilities:
-**FACTUAL Scene Graph Extraction**
+- Reward functions utilities (important for oversights and hallucinations evaluation):
+### FACTUAL Scene Graph Extraction
 ```sh
 pip install FactualSceneGraph
 ```
