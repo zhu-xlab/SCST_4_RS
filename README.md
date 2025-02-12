@@ -1,11 +1,9 @@
 <h1 align="center">
-  <a href="https://github.com/dec0dOS/amazing-github-template">
-    <img src="https://i.imgur.com/TBRZwDu.png" alt="Logo" width="800" height="200">
-  </a>
+  <img src="https://i.imgur.com/TBRZwDu.png" alt="Logo" width="800" height="200">
 </h1>
 
 <div align="center">
-LAVIS's InstructBLIP model finetuned to remote sensing image-text data via Reinforcement Learning. The aim is to teach Visual Reasoning to a VLM on Remote Sensing imagery, which is only scarcely present in its pretraining dataset.
+**LAVIS's InstructBLIP model finetuned** to **remote sensing image-text data** via **Reinforcement Learning**. The aim is to **teach Visual Reasoning to a VLM on Remote Sensing imagery**: **Visual Reasoning data is quite scarce in the domain of remote sensing**, the aim of this RL finetuning is to **better exploit the existing data** and to "enforce" Visual Reasoning.
 </div>
 
 <div align="center">
@@ -51,12 +49,9 @@ Note that **SCST** can be made compatible with PPO/GRPO, with the issue that the
 </tr>
 </table>
 
-### Built With
-
-- [SalesForce's LAVIS repository](https://github.com/salesforce/LAVIS)
-This repository relies almost entirely on LAVIS; a few modifications allows it to be finetuned using RL.
-- [FACTUAL scene graph extractor](https://github.com/zhuang-li/FactualSceneGraph)
-One of the most impactful reward function is obtained by measuring the closeness of generated captions and ground-truth (human-annotated) captions. FACTUAL extracts "scene graphs", like the SPICE metric, to compute such a reward by comparing the graphs. It also highlights the missing objects and the hallucinations made by the model.
+### 🛠 Built With
+- 🏗 **[SalesForce's LAVIS](https://github.com/salesforce/LAVIS)** - Core vision-language model, easily adaptable to RL
+- 📊 **[FACTUAL Scene Graph Extractor](https://github.com/zhuang-li/FactualSceneGraph)** - One of the most impactful reward function is obtained by measuring the closeness of generated captions and ground-truth (human-annotated) captions. FACTUAL extracts "scene graphs", like the SPICE metric, to compute such a reward by comparing the graphs. It also highlights the missing objects and the hallucinations made by the model.
 
 **Figure**
 
