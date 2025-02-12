@@ -18,7 +18,7 @@
 
 - [About](#about)
   - [Built With](#built-with)
-  - [Figure](#figure-model)
+  - [Diagram of the model](#figure-model)
   - [Qualitative results](#quali)
   - [Quantitative results](#quant)
 - [Getting Started](#getting-started)
@@ -49,11 +49,11 @@ Note that **SCST** can be made compatible with PPO/GRPO, with the issue that the
 </tr>
 </table>
 
-### 🛠 Built With
+## 🛠 Built With
 - 🏗 **[SalesForce's LAVIS](https://github.com/salesforce/LAVIS)** - Core vision-language model, easily adaptable to RL
 - 📊 **[FACTUAL Scene Graph Extractor](https://github.com/zhuang-li/FactualSceneGraph)** - One of the most impactful reward function is obtained by measuring the closeness of generated captions and ground-truth (human-annotated) captions. FACTUAL extracts "scene graphs", like the SPICE metric, to compute such a reward by comparing the graphs. It also highlights the missing objects and the hallucinations made by the model.
 
-**Figure**
+## 📈 Diagram of the model
 
 <img src="https://i.imgur.com/AasnyVG.png" alt="Figure BLIP_SCST" width="1000" height="300">
 
