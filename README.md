@@ -57,8 +57,9 @@ Note that SCST can be made compatible with PPO/GRPO, with the issue that there a
 - 📊 **[FACTUAL Scene Graph Extractor](https://github.com/zhuang-li/FactualSceneGraph)** - One of the most impactful reward function is obtained by measuring the closeness of generated captions and ground-truth (human-annotated) captions. FACTUAL extracts "scene graphs", like the SPICE metric, to compute such a reward by comparing the graphs. It also highlights the missing objects and the hallucinations made by the model.
 
 ## 📈 Diagram of the model
-
-<img src="https://i.imgur.com/AasnyVG.png" alt="Figure BLIP_SCST" width="1000" height="300">
+<h1 align="center">
+  <img src="https://i.imgur.com/AasnyVG.png" alt="Figure BLIP_SCST" width="850" height="220">
+</h1>
 
 ## 📊 Qualitative results
 
@@ -66,7 +67,53 @@ Note that SCST can be made compatible with PPO/GRPO, with the issue that there a
 
 ## 📈 Quantitative results
 
-Experiments were conducted on the <a href="https://github.com/201528014227051/RSICD_optimal">RSICD</a>, <a href="https://mega.nz/folder/wCpSzSoS#RXzIlrv--TDt3ENZdKN8JA">UCM-Captions</a>, <a href="https://mega.nz/folder/pG4yTYYA#4c4buNFLibryZnlujsrwEQ">Sydney Captions</a>, <a href="https://github.com/HaiyanHuang98/NWPU-Captions">NWPU Captions</a> and 
+Experiments were conducted on <a href="https://github.com/201528014227051/RSICD_optimal">RSICD</a>, <a href="https://mega.nz/folder/wCpSzSoS#RXzIlrv--TDt3ENZdKN8JA">UCM-Captions</a>, and on <a href="https://huggingface.co/datasets/xiang709/VRSBench">VRSBench</a>.
+
+When evaluated on RSICD using standard captioning metrics, our method demonstrates SOTA performances. CE = Cross-Entropy loss training.
+
+<h1 align="center">
+  <img src="https://i.imgur.com/2McI0hm.png" alt="RSICD_standard_metrics" width="600" height="150" class="center">
+</h1>
+
+### 📈 Custom metrics (oversights, hallucinations)
+
+**RSICD Dataset**
+
+<h1 align="center">
+  <img src="https://i.imgur.com/QZIOPNb.png" alt="RSICD oversights/hallucinations" width="700" height="150" class="center">
+</h1>
+
+The up and down arrows next to the scores indicate the direction towards which the score should go to improve the score. For instance, **-2,62%** in the "oversights" column on the first line is in accordance with the arrow's direction, meaning that it is going in the right direction.
+
+**UCM Dataset**
+
+<h1 align="center">
+  <img src="https://i.imgur.com/mJ07kjS.png" alt='UCM" width="700" height="150" class='center'>
+
+### Reward functions (A.K.A. learning signals)
+
+**NKL**:  **N**egative **K**ullback-**L**eibler **D**ivergence. Using a small language model (a pretrained BERT model from spaCy), we compute embeddings for every tokens of the ground-truth captions and of the generated captions. This yields two distributions of embeddings, that we try to bring closer by minimizing their KL-Divergence.
+
+**CIDEr**: a classic captioning metric that relies on TF-IDF vectors ressemblance between two sentences to compare.  
+
+**length**: opposite of the number of tokens in the generated caption (since the policy loss is being minimized, we must minimize its opposite to maximize the length of generated captions).  
+
+**SDE**: **S**cene **D**escription **E**xhaustiveness, **proportion of entities in the generated caption present in the ground-truth caption(s)**, and serves the purpose of **getting ground-truth captions entities into generated captions**, to align with the expert human annotators. Entities are lemmatized before this score is computed, to avoid false negatives.  
+
+SDE computation example: 
+```sh
+• **Generated caption**: There is a _forest_. (object: forest)
+• **Ground-truth caption 1**: There is a _forest_ and a _river_. (objects: forest, river)
+• **Ground-truth caption 2**: There is a _forest_, a _river_ and a _road_. (objects: forest, river, road)
+
+Objects detected in the human-annotated (ground-truth) captions: **forest, river, road** (3 objects)
+Object detected in the model's output caption: **forest** (1 object)
+
+Therefore, the SDE score is **1/3** in this example.
+```
+#### ➕ Addendum to the policy loss of SCST
+
+Another loss term, termed **V/E** for **Varentropy/Entropy**, is **jointly minimized with the policy loss**. Inspired by <a href="https://github.com/xjdr-alt/entropix">Entropix</a>, the point is to balance between **diverse vocabulary usage (high entropy)** and **consistent token distributions (low varentropy)**. This significantly limits degenerate generated tokens distributions, and encourages vocabulary exploration at the same time, which increases the model's vocabulary by taking inspiration from the human-annotated captions.
 
 ## 🚀 Getting Started
 
