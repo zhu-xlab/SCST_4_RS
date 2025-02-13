@@ -114,6 +114,10 @@ Therefore, the SDE score is **1/3** in this example.
 #### ➕ Addendum to the policy loss of SCST
 
 Another loss term, termed **V/E** for **Varentropy/Entropy**, is **jointly minimized with the policy loss**. Inspired by <a href="https://github.com/xjdr-alt/entropix">Entropix</a>, the point is to balance between **diverse vocabulary usage (high entropy)** and **consistent token distributions (low varentropy)**. This significantly limits degenerate generated tokens distributions, and encourages vocabulary exploration at the same time, which increases the model's vocabulary by taking inspiration from the human-annotated captions.
+The ```math 
+\lambda = 10^{-4}
+```
+Weighting is the weight we multiply the **V/E** term with to control its magnitude.
 
 ## 🚀 Getting Started
 
