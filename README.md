@@ -83,12 +83,23 @@ When evaluated on RSICD using standard captioning metrics, our method demonstrat
   <img src="https://i.imgur.com/QZIOPNb.png" alt="RSICD oversights/hallucinations" width="700" height="150" class="center">
 </h1>
 
-The up and down arrows next to the scores indicate the direction towards which the score should go to improve the score. For instance, **-2,62%** in the "oversights" column on the first line is in accordance with the arrow's direction, meaning that it is going in the right direction.
+The up and down arrows next to the scores indicate the direction towards which the score should go to improve the score. For instance, **-2,62%** in the "oversights" column on the first line is in accordance with the arrow's direction, meaning that it is going in the right direction. However, the code fails at addressing hallucinations: this is probably caused by the relatively short length of the captions. **VRSBench has longer, more expressive and contains a more elaborate vocabulary than the other datasets**, making it the perfect candidate for **hallucinations reduction testing**.
 
 **UCM Dataset**
 
 <h1 align="center">
   <img src="https://i.imgur.com/mJ07kjS.png" alt='UCM" width="700" height="150" class='center'>
+</h1>
+
+Our method seems even more efficient on UCM dataset. This might be caused by the fact that this dataset is quite small, and contains a lot of repetited captions.
+
+**VRSBench**
+
+<h1>
+  <img src="https://i.imgur.com/YuM89xP.png" alt="VRSBench" width="800" height="150" class='center'>
+</h1>
+
+
 
 ### Reward functions (A.K.A. learning signals)
 
@@ -114,10 +125,7 @@ Therefore, the SDE score is **1/3** in this example.
 #### ➕ Addendum to the policy loss of SCST
 
 Another loss term, termed **V/E** for **Varentropy/Entropy**, is **jointly minimized with the policy loss**. Inspired by <a href="https://github.com/xjdr-alt/entropix">Entropix</a>, the point is to balance between **diverse vocabulary usage (high entropy)** and **consistent token distributions (low varentropy)**. This significantly limits degenerate generated tokens distributions, and encourages vocabulary exploration at the same time, which increases the model's vocabulary by taking inspiration from the human-annotated captions.
-The ```math 
-\lambda = 10^{-4}
-```
-Weighting is the weight we multiply the **V/E** term with to control its magnitude.
+The $\lambda \ = \ 10^{-4}$ constant is the weight we multiply the **V/E** term with to control its magnitude.
 
 ## 🚀 Getting Started
 
