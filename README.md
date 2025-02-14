@@ -132,17 +132,16 @@ When evaluated on RSICD using these metrics, our method demonstrates SOTA perfor
 
 **SDE**: **S**cene **D**escription **E**xhaustiveness, **proportion of entities in the generated caption present in the ground-truth caption(s)**, and serves the purpose of **getting ground-truth captions entities into generated captions**, to align with the expert human annotators. Entities are lemmatized before this score is computed, to avoid false negatives.  
 
-SDE computation example: 
-```sh
-• **Generated caption**: There is a _forest_. (object: forest)
-• **Ground-truth caption 1**: There is a _forest_ and a _river_. (objects: forest, river)
-• **Ground-truth caption 2**: There is a _forest_, a _river_ and a _road_. (objects: forest, river, road)
+**SDE computation example:**
 
-Objects detected in the human-annotated (ground-truth) captions: **forest, river, road** (3 objects)
-Object detected in the model's output caption: **forest** (1 object)
+> • **Generated caption**: There is a _forest_. (object: forest)  
+> • **Ground-truth caption 1**: There is a _forest_ and a _river_. (objects: forest, river)  
+> • **Ground-truth caption 2**: There is a _forest_, a _river_ and a _road_. (objects: forest, river, road)  
 
-Therefore, the SDE score is **1/3** in this example.
-```
+> Objects detected in the human-annotated (ground-truth) captions: **forest, river, road** (3 objects)  
+> Object detected in the model's output caption: **forest** (1 object)  
+
+> Therefore, the SDE score is **1/3** in this example.  
 
 **RSICD Dataset**
 
