@@ -244,7 +244,7 @@ which is licensed under the **BSD 3-Clause License**, and code from <a href="htt
 
 - **New contributions** to this repository are licensed under the **MIT License**.  
 - **Portions derived from LAVIS remain under the BSD 3-Clause License**.  
-- **The sentence object extractor, FACTUAL, is licensed under the **MIT License**  
+- **The sentence object extractor, FACTUAL**, is licensed under the **MIT License**  
 
 ## 🙏 Acknowledgements
 
