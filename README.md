@@ -235,7 +235,7 @@ Weights for the best InstructBLIP model we have obtained.
 
 ## ⚙️ Learning signals registry
 
-The "rewards.py" registry of learning signals may be found in <a href="https://github.com/zhu-xlab/InstructBLIP_SCST/blob/main/lavis/tasks/rewards.py> "InstructBLIP_SCST/lavis/tasks/rewards.py</a>
+The "rewards.py" registry of learning signals may be found in <a href="https://github.com/zhu-xlab/InstructBLIP_SCST/blob/main/lavis/tasks/rewards.py">InstructBLIP_SCST/lavis/tasks/rewards.py</a>
 
 ## 🧾 License
 
