@@ -11,7 +11,8 @@ LAVIS's InstructBLIP model finetuned to remote sensing image-text data via Reinf
 
 [![license](https://img.shields.io/github/license/dec0dOS/amazing-github-template.svg?style=flat-square)](#-license)
 [![License](https://img.shields.io/badge/License-BSD_3--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)
-[![Static Badge](https://img.shields.io/badge/AI4EO-TUM-blue.svg)](https://ai4eo.de/)
+[![Static Badge](https://img.shields.io/badge/AI4EO-TUM-blue.svg)](https://ai4eo.de/)  
+
 ![nVIDIA](https://img.shields.io/badge/nVIDIA-%2376B900.svg?style=for-the-badge&logo=nVIDIA&logoColor=white)
 ![Visual Studio](https://img.shields.io/badge/Visual%20Studio-5C2D91.svg?style=for-the-badge&logo=visual-studio&logoColor=white)
 ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
