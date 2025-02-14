@@ -9,7 +9,7 @@ LAVIS's InstructBLIP model finetuned to remote sensing image-text data via Reinf
 <div align="center">
 <br />
 
-[![license](https://img.shields.io/github/license/dec0dOS/amazing-github-template.svg?style=flat-square)](LICENSE)
+[![license](https://img.shields.io/github/license/dec0dOS/amazing-github-template.svg?style=flat-square)](#-license)
 
 </div>
 
