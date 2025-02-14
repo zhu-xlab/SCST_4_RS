@@ -239,7 +239,11 @@ The "rewards.py" registry of learning signals may be found in <a href="https://g
 
 ## 🧾 License
 
-This project is licensed under the **MIT license**.
+This repository contains code derived from SalesForce's <a href="https://github.com/salesforce/LAVIS">LAVIS</a>
+which is licensed under the **BSD 3-Clause License**. 
+
+- **New contributions** to this repository are licensed under the **MIT License**.
+- **Portions derived from LAVIS remain under the BSD 3-Clause License**.
 
 ## 🙏 Acknowledgements
 
