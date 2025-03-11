@@ -3,7 +3,7 @@
 </h1>
 
 <div align="center">
-LAVIS's InstructBLIP model finetuned to remote sensing image-text data via Reinforcement Learning. The aim is to teach Visual Reasoning to a VLM on Remote Sensing imagery: Visual Reasoning data is quite scarce in the domain of remote sensing, the goal of this RL finetuning is to better exploit the existing data and to "enforce" Visual Reasoning in RS VLMs.
+LAVIS's InstructBLIP model finetuned to remote sensing image-text data via Reinforcement Learning. The aim is to teach Visual Reasoning to a VLM on Remote Sensing imagery: Visual Reasoning data being quite scarce in the domain of remote sensing, this improves performances on standard metrics, and on novel metrics.
 </div>
 
 <div align="center">
@@ -47,7 +47,7 @@ LAVIS's InstructBLIP model finetuned to remote sensing image-text data via Reinf
 <tr>
 <td>
 
-Forked from SalesForce's LAVIS repository, this improved version implements Reinforcement Learning to bolster image captioning abilities for the specific domain of remote sensing. On top of optimization through Cross-Entropy loss minimization, a few supplementary Reinforcement Learning epochs are completed to guide the model towards more desirable outputs, using learning signals tailored to the domain of Remote Sensing. More precisely, **Self-Critical Sequence Training** (<a>https://arxiv.org/abs/1612.00563), a variant of the **REINFORCE** algorithm which is similar to PPO, is used to enforce these learning signals.  
+Forked from SalesForce's LAVIS repository, this improved version implements Reinforcement Learning to bolster image captioning abilities for the specific domain of remote sensing. On top of optimization through Cross-Entropy loss minimization, a few supplementary Reinforcement Learning epochs are ran to guide the model towards more desirable outputs, using well-crafted learning signals. More precisely, **Self-Critical Sequence Training** (<a>https://arxiv.org/abs/1612.00563), a variant of the **REINFORCE** algorithm, which is similar to PPO or GRPO, is used to enforce these learning signals.
 
 <details open>
 <summary>Additional info</summary>
@@ -61,7 +61,7 @@ Note that SCST can be made compatible with PPO/GRPO, with the issue that there a
 
 ## 🛠 Built With
 - 🏗 **[SalesForce's LAVIS](https://github.com/salesforce/LAVIS)** - Core vision-language model, easily adaptable to RL
-- 📊 **[FACTUAL Scene Graph Extractor](https://github.com/zhuang-li/FactualSceneGraph)** - One of the most impactful reward function is obtained by measuring the closeness of generated captions and ground-truth (human-annotated) captions. FACTUAL extracts "scene graphs", like the SPICE metric, to compute such a reward by comparing the graphs. It also highlights the missing objects and the hallucinations made by the model.
+- 📊 **[FACTUAL Scene Graph Extractor](https://github.com/zhuang-li/FactualSceneGraph)** - One of the most impactful reward function is obtained by measuring the closeness of generated captions and ground-truth (human-annotated) captions. FACTUAL extracts "scene graphs" better than SPICE does, to compute this reward function by comparing the graphs. The difference between graphs also highlights the missing objects and the hallucinations made by the models
 
 ## 📈 Diagram of the model
 <h1 align="center">
@@ -117,11 +117,13 @@ Our model is first evaluated on standard captioning metrics, including:
 - <a href="https://aclanthology.org/W05-0909/">METEOR</a>;
 - <a href="https://arxiv.org/abs/1607.08822">SPICE</a>;
 
-SPICE is the most correlated with human judgement.
+In this list, SPICE is the most correlated with human judgement.
 
 Experiments were conducted on <a href="https://github.com/201528014227051/RSICD_optimal">RSICD</a>, <a href="https://mega.nz/folder/wCpSzSoS#RXzIlrv--TDt3ENZdKN8JA">UCM-Captions</a>, and on <a href="https://huggingface.co/datasets/xiang709/VRSBench">VRSBench</a>.
 
-When evaluated on RSICD using these metrics, our method demonstrates SOTA performances. CE = Cross-Entropy loss training.
+When evaluated on RSICD using these metrics, our method demonstrates SOTA performances. 
+
+CE = Cross-Entropy loss training.
 
 <h1 align="center">
   <img src="https://i.imgur.com/2McI0hm.png" alt="RSICD_standard_metrics" width="600" height="150" class="center">
@@ -131,13 +133,13 @@ When evaluated on RSICD using these metrics, our method demonstrates SOTA perfor
 
 ### Reward functions used to optimize these metrics directly (A.K.A. learning signals)
 
-**NKL**:  **N**egative **K**ullback-**L**eibler **D**ivergence. Using a small language model (a pretrained BERT model from spaCy), we compute embeddings for every tokens of the ground-truth captions and of the generated captions. This yields two distributions of embeddings, that we try to bring closer by minimizing their KL-Divergence.
+**NKL**:  **N**egative **K**ullback-**L**eibler **D**ivergence. Using a small language model (a pretrained BERT model from spaCy), we compute embeddings for every tokens of the ground-truth captions and of the generated captions. This yields two distributions of embeddings, that we try to bring closer by minimizing the KL-Divergence. To avoid the distribution being learned collapsing on the other, which would cause overfitting on the training dataset, we measure this KL Divergence only for the last 10,000 token embeddings, and we update this learning signal once every 10,000 tokens. Exponential Moving Average (EMA) could also be used for this.
 
-**CIDEr**: a classic captioning metric that relies on TF-IDF vectors ressemblance between two sentences to compare.  
+**CIDEr**: A classic captioning metric that relies on the TF-IDF vectors ressemblance between two sentences to compare.  
 
-**length**: opposite of the number of tokens in the generated caption (since the policy loss is being minimized, we must minimize its opposite to maximize the length of generated captions).  
+**length**: opposite of the number of tokens in the generated caption (since the policy loss is being minimized, we must minimize the opposite of the length to maximize it).  
 
-**SDE**: **S**cene **D**escription **E**xhaustiveness, **proportion of entities in the generated caption present in the ground-truth caption(s)**, and serves the purpose of **getting ground-truth captions entities into generated captions**, to align with the expert human annotators. Entities are lemmatized before this score is computed, to avoid false negatives.  
+**SDE**: **S**cene **D**escription **E**xhaustiveness, **proportion of entities in the generated caption present in the ground-truth caption(s)**. Serves the purpose of **getting ground-truth captions entities into generated captions**, to align with the expert human annotators captions, the semi-automatically generated captions (i. e. human-assisted at some point), and the entirely automatically generated captions. This alignment, of course, is noisy, which is why we focused more on human annotators captions. Objects (words) are lemmatized before this score is computed, to avoid false negatives.  
 
 **SDE computation example:**
 
@@ -156,7 +158,7 @@ When evaluated on RSICD using these metrics, our method demonstrates SOTA perfor
   <img src="https://i.imgur.com/QZIOPNb.png" alt="RSICD oversights/hallucinations" width="700" height="150" class="center">
 </h1>
 
-The up and down arrows next to the scores indicate the direction towards which the score should go to improve the score. For instance, **-2,62%** in the "oversights" column on the first line is in accordance with the arrow's direction, meaning that it is going in the right direction. However, the code fails at addressing hallucinations: this is probably caused by the relatively short length of the captions. **VRSBench has longer, more expressive and contains a more elaborate vocabulary than the other datasets**, making it the perfect candidate for **hallucinations reduction testing**.
+The up and down arrows next to the scores indicate the direction towards which the score should go to improve the score. For instance, **-2,62%** in the "oversights" column on the first line is in accordance with the arrow's direction, meaning that it is going in the right direction. However, the code fails at addressing hallucinations: this is probably caused by the relatively short length of the captions. **VRSBench has longer, more expressive captions than other datasets, and contains an elaborate vocabulary**, making it the perfect candidate for **hallucinations reduction testing**, which does not work on datasets with smaller sentences, as the amount of hallucinations tends to increase with the length of the caption.
 
 **UCM Dataset**
 
@@ -255,6 +257,6 @@ which is licensed under the **BSD 3-Clause License**, and code from <a href="htt
 
 ## 🙏 Acknowledgements
 
-We extend our gratitude to **SalesForce** for developing the **LAVIS** repository, which provides an intuitive Vision-Language models library. Implementing Reinforcement Learning was made significantly easier by their work.
+We extend our gratitude to **SalesForce** for developing the **LAVIS** repository, which provides a simple to use Vision-Language models library. Implementing Reinforcement Learning was made significantly easier by their work.
 
 Additionally, one of our main learning signals for RL was based on <a href="https://github.com/zhuang-li/FactualSceneGraph">**FACTUAL**</a>, a finetuned FLAN-T5 model that extracts scene graphs.
