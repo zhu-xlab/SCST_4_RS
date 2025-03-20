@@ -65,7 +65,7 @@ Note that SCST can be made compatible with PPO/GRPO, with the issue that there a
 
 ## 📈 Diagram of the model
 <h1 align="center">
-  <img src="https://i.imgur.com/Vqfsuvl.png" alt="Figure BLIP_SCST" width="1672" height="992">
+  <img src="https://i.imgur.com/Vqfsuvl.png" alt="Figure BLIP_SCST" width="800" height="475">
 </h1>
 
 ## 📊 Qualitative results
