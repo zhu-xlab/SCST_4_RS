@@ -1,5 +1,5 @@
 <h1 align="center">
-  <img src="https://i.imgur.com/TBRZwDu.png" alt="Logo" width="800" height="200">
+  <img src="https://i.imgur.com/TBRZwDu.png" alt="Logo" width="1672" height="992">
 </h1>
 
 <div align="center">
