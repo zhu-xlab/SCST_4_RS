@@ -25,15 +25,21 @@ LAVIS's InstructBLIP model finetuned to remote sensing image-text data via Reinf
 
 - [About](#-about)
   - [Built With](#-built-with)
+  - [Works with](#-works-with)
   - [Diagram of the model](#-diagram-of-the-model)
   - [Qualitative results](#-qualitative-results)
   - [Quantitative results](#-quantitative-results)
+  - [Augmented datasets](#-augmented-datasets)
+  - [Learning signals that combine into the reward function](#-learning-signals-that-combine-into-the-reward-function)
+  - [Custom metrics](#-custom-metrics)
+
+## Reward functions used to optimize these metrics directly (A.K.A. learning signals)
 - [Getting Started](#-getting-started)
   - [Prerequisites](#prerequisites)
 - [Training configuration](#%EF%B8%8F-training-configuration)
 - [Start training](#-start-training)
-- [Learning signals registry](#%EF%B8%8F-learning-signals-registry)
 - [Best Model](#-best-model)
+- [Learning signals registry](#%EF%B8%8F-learning-signals-registry)
 - [License](#-license)
 - [Acknowledgements](#-acknowledgements)
 
@@ -60,12 +66,18 @@ Note that SCST can be made compatible with PPO/GRPO, with the issue that there a
 </table>
 
 ## 🛠 Built With
-- 🏗 **[SalesForce's LAVIS](https://github.com/salesforce/LAVIS)** - Core vision-language model, easily adaptable to RL
-- 📊 **[FACTUAL Scene Graph Extractor](https://github.com/zhuang-li/FactualSceneGraph)** - One of the most impactful reward function is obtained by measuring the closeness of generated captions and ground-truth (human-annotated) captions. FACTUAL extracts "scene graphs" better than SPICE does, to compute this reward function by comparing the graphs. The difference between graphs also highlights the missing objects and the hallucinations made by the models
+- 🏗 **[SalesForce's LAVIS](https://github.com/salesforce/LAVIS)** - Core vision-language model, easily adaptable to RL;
+  
+- 📊 **[FACTUAL Scene Graph Extractor](https://github.com/zhuang-li/FactualSceneGraph)** - One of the most impactful reward function is obtained by measuring the closeness of generated captions and ground-truth (human-annotated) captions. FACTUAL extracts "scene graphs" better than SPICE does, to compute this reward function by comparing the graphs. The difference between graphs also highlights the missing objects and the hallucinations made by the models.
+
+## ⚙️ Works with
+- **[Alibaba's Qwen2.5-VL](https://github.com/QwenLM/Qwen2.5-VL)** - Core vision-language model, performance gains similar to LAVIS;
+
+- **Applicable to any differentiable model producing logits as output**.
 
 ## 📈 Diagram of the model
 <h1 align="center">
-  <img src="https://i.imgur.com/Vqfsuvl.png" alt="Figure BLIP_SCST" width="800" height="475">
+  <img src="https://i.imgur.com/fOtuyIm.jpeg" alt="Figure BLIP_SCST" width="800" height="475">
 </h1>
 
 ## 📊 Qualitative results
@@ -129,17 +141,30 @@ CE = Cross-Entropy loss training.
   <img src="https://i.imgur.com/2McI0hm.png" alt="RSICD_standard_metrics" width="600" height="150" class="center">
 </h1>
 
+### ➕ Augmented datasets
+
+Four image captioning datasets (RemoteCLIP, VRSBench, UCM-Captions, NWPU-Captions) are augmented with the detections of an object detectors, and the count of each class of detected object **[Large Selective Kernel Network](https://openaccess.thecvf.com/content/ICCV2023/html/Li_Large_Selective_Kernel_Network_for_Remote_Sensing_Object_Detection_ICCV_2023_paper.html)**.
+
+A new entry, the "count dictionary", in the **{"object": count, ...}** is added to the samples of all four datasets:
+- The 📊 **[FACTUAL Scene Graph Extractor](https://github.com/zhuang-li/FactualSceneGraph)** is employed to detect objects from ground-truth captions and, if possible, their count;
+- The 🛰️ **[Large Selective Kernel Network](https://openaccess.thecvf.com/content/ICCV2023/html/Li_Large_Selective_Kernel_Network_for_Remote_Sensing_Object_Detection_ICCV_2023_paper.html)** is employed to detect objects from the aerial images and count each class of detected object;
+- The dictionaries from both models are nonredundantly fused. Ground-truth captions' counts have priority over the object detector model's counts.
+
+This improves the **SDE** learning signal that is truly rooted in Remote Sensing, and introduces a **Count** learning signal.
+
 ### 📈 Custom metrics (oversights, hallucinations)
 
-### Reward functions used to optimize these metrics directly (A.K.A. learning signals)
+WIP
 
-**NKL**:  **N**egative **K**ullback-**L**eibler **D**ivergence. Using a small language model (a pretrained BERT model from spaCy), we compute embeddings for every tokens of the ground-truth captions and of the generated captions. This yields two distributions of embeddings, that we try to bring closer by minimizing the KL-Divergence. To avoid the distribution being learned collapsing on the other, which would cause overfitting on the training dataset, we measure this KL Divergence only for the last 10,000 token embeddings, and we update this learning signal once every 10,000 tokens. Exponential Moving Average (EMA) could also be used for this.
+## Learning signals that combine into the reward function
+
+**NKL**:  **N**egative **K**ullback-**L**eibler **D**ivergence. Using a small language model (a pretrained BERT model from spaCy), we compute embeddings for every tokens of the ground-truth captions and of the generated captions. This yields two distributions of embeddings, that we try to bring closer by minimizing the KL-Divergence. To avoid the distribution being learned collapsing on the other, which would cause overfitting on the training dataset, we measure this KL Divergence only for the last 10,000 token embeddings, and we update this learning signal once every 10,000 tokens (Exponential Moving Average WIP). This can be considered as a soft trust region method.
 
 **CIDEr**: A classic captioning metric that relies on the TF-IDF vectors ressemblance between two sentences to compare.  
 
-**length**: opposite of the number of tokens in the generated caption (since the policy loss is being minimized, we must minimize the opposite of the length to maximize it).  
+**Length**: Number of tokens in the generated caption (since the policy loss is being minimized, we must minimize the opposite of the length to maximize it).  
 
-**SDE**: **S**cene **D**escription **E**xhaustiveness, **proportion of entities in the generated caption present in the ground-truth caption(s)**. Serves the purpose of **getting ground-truth captions entities into generated captions**, to align with the expert human annotators captions, the semi-automatically generated captions (i. e. human-assisted at some point), and the entirely automatically generated captions. This alignment, of course, is noisy, which is why we focused more on human annotators captions. Objects (words) are lemmatized before this score is computed, to avoid false negatives.  
+**SDE**: **S**cene **D**escription **E**xhaustiveness, **proportion of entities in the generated caption present in the ground-truth count dictionary(ies)**. Serves the purpose of **getting ground-truth objects and counts into generated captions**, to mostly align with the expert human annotators and the object detector results, but not entirely, to avoid **exposure bias** that would result in fitting moderately noisy ground-truth captions and omit crucial elements. When the scene graph of a generated caption and the count dictionary of a ground-truth caption are compared, extracted objects are lemmatized, and fuzzy matching is applied, to account for synonyms.
 
 **SDE computation example:**
 
@@ -150,7 +175,16 @@ CE = Cross-Entropy loss training.
 > Objects detected in the human-annotated (ground-truth) captions: **forest, river, road** (3 objects)  
 > Object detected in the model's output caption: **forest** (1 object)  
 
-> Therefore, the SDE score is **1/3** in this example.  
+> Therefore, the SDE score is **1/3** in this example.
+>
+**Counting Accuracy**: Once objects from generated and ground-truth captions are "aligned", and if they have an associated count, the average (over objects) absolute and signed (how an object's count compares to the ground-truth count, >, = or <) errors are computed and used as learning signals.
+
+> Examples:
+> • **Generated caption**: There are _four_ planes and _three_ buildings.
+> • **Ground-truth caption 1**: There are _five_ planes and _one_ buildings.
+
+> The absolute counting accuracy is (|5 - 4| + |3 - 1|)/2 = 1.5
+> The signed counting accuracy is (4 - 5 + 3 - 1)/2 = 1.5
 
 **RSICD Dataset**
 
